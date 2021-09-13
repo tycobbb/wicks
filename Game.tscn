@@ -45,3 +45,8 @@ __meta__ = {
 [node name="Player" parent="." instance=ExtResource( 1 )]
 mForward = 3.0
 mStrafe = 2.0
+
+[node name="DebugLight" type="DirectionalLight" parent="."]
+transform = Transform( -0.352772, -0.82429, -0.44283, -0.753887, -0.0299514, 0.656321, -0.554262, 0.565375, -0.610855, -0.0683928, 6.14553, 0 )
+light_color = Color( 0.584314, 0.870588, 0.6, 1 )
+directional_shadow_mode = 0

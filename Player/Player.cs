@@ -1,7 +1,8 @@
 using Godot;
 
+/// a player "controller"
 public class Player: KinematicBody {
-    // -- config --
+    // -- tuning --
     /// the player's forward movement speed
     [Export] float mForward = 1.0f;
 
@@ -93,7 +94,7 @@ public class Player: KinematicBody {
         mVelocity.z = v.z;
     }
 
-    // update look direction from input
+    /// update look direction from input
     void Look(Vector2 input) {
         // rotate player horizontally
         mRoot.RotateY(-input.x * mMouseSensitivity);

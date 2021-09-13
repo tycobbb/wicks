@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://env.tres" type="Environment" id=2]
 [ext_resource path="res://Sky/Sky.tres" type="Material" id=3]
+[ext_resource path="res://Room/Room.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CubeMesh" id=1]
 material = ExtResource( 3 )
@@ -24,47 +25,23 @@ cast_shadow = 0
 mesh = SubResource( 1 )
 material/0 = ExtResource( 3 )
 
-[node name="Floor" type="StaticBody" parent="."]
+[node name="Ground" type="StaticBody" parent="."]
 
-[node name="Floor-mesh" type="CSGBox" parent="Floor"]
+[node name="Floor-mesh" type="CSGBox" parent="Ground"]
 material_override = SubResource( 2 )
 width = 100.0
 height = 0.002
 depth = 100.0
 
-[node name="Floor-collision" type="CollisionShape" parent="Floor"]
+[node name="Floor-collision" type="CollisionShape" parent="Ground"]
 transform = Transform( 50, 0, 0, 0, 1, 0, 0, 0, 50, 0, -1, 0 )
 shape = SubResource( 3 )
 __meta__ = {
 "_editor_description_": "		"
 }
 
+[node name="Room" parent="." instance=ExtResource( 4 )]
+
 [node name="Player" parent="." instance=ExtResource( 1 )]
 mForward = 3.0
 mStrafe = 2.0
-
-[node name="House" type="CSGCombiner" parent="."]
-
-[node name="House-wallB" type="CSGBox" parent="House"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -4.75 )
-width = 10.0
-height = 4.0
-depth = 0.5
-
-[node name="House-wallL" type="CSGBox" parent="House"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4.75, 2, 0 )
-width = 10.0
-height = 4.0
-depth = 0.5
-
-[node name="House-wallF" type="CSGBox" parent="House"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2, 4.75 )
-width = 10.0
-height = 4.0
-depth = 0.5
-
-[node name="House-wallR" type="CSGBox" parent="House"]
-transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -4.75, 2, 0 )
-width = 10.0
-height = 4.0
-depth = 0.5

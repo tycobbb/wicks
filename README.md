@@ -1,4 +1,4 @@
 # wicks
 
-lucky candle game
+lucky candle games
 

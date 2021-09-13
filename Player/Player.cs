@@ -24,17 +24,22 @@ public class Player: KinematicBody {
 
     // -- nodes --
     /// the player's root node
-    Spatial mRoot => this;
+    Spatial mRoot;
 
     /// the player's physics body
-    KinematicBody mBody => this;
+    KinematicBody mBody;
 
-    /// the attached camera node
-    Spatial mLook => GetNode<Spatial>("Player-look");
+    /// the point the camera is attached to
+    Spatial mViewpoint;
 
     // -- lifecycle --
     public override void _Ready() {
         base._Ready();
+
+        // capture node dependencies
+        mRoot = this;
+        mBody = this;
+        mViewpoint = GetNode<Spatial>("Viewpoint");
 
         // capture mouse input (i.e. hide cursor)
         Input.SetMouseMode(Input.MouseMode.Captured);
@@ -100,11 +105,11 @@ public class Player: KinematicBody {
         mRoot.RotateY(-input.x * mMouseSensitivity);
 
         // rotate camera vertically
-        mLook.RotateX(input.y * mMouseSensitivity);
+        mViewpoint.RotateX(input.y * mMouseSensitivity);
 
         // clamp rotation
-        var r = mLook.Rotation;
+        var r = mViewpoint.Rotation;
         r.x = Mathf.Clamp(r.x, -1.2f, 1.2f);
-        mLook.Rotation = r;
+        mViewpoint.Rotation = r;
     }
 }

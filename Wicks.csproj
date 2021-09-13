@@ -2,4 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Sky\Sky.shader" />
+  </ItemGroup>
 </Project>

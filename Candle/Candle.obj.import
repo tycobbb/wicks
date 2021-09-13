@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Candle.obj-b819164a892749d38f1272f234d9d83a.mesh"
+
+[deps]
+
+files=[ "res://.import/Candle.obj-b819164a892749d38f1272f234d9d83a.mesh" ]
+
+source_file="res://Candle/Candle.obj"
+dest_files=[ "res://.import/Candle.obj-b819164a892749d38f1272f234d9d83a.mesh", "res://.import/Candle.obj-b819164a892749d38f1272f234d9d83a.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

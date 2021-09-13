@@ -3,6 +3,9 @@
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Sky\Sky.shader" />
+    <Compile Remove="Sky\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Sky\**" />
   </ItemGroup>
 </Project>

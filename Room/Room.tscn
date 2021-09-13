@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Room/Table.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://Room/Candle.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Candle/Candle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Room/Door.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://Room/Room.cs" type="Script" id=4]
 [ext_resource path="res://Room/Wall.tscn" type="PackedScene" id=5]
@@ -39,17 +39,19 @@ material/10 = null
 material/11 = null
 material/12 = null
 
-[node name="Hinge" type="HingeJoint" parent="Door"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.713749, 0.160709, -0.0256968 )
-nodes/node_a = NodePath("..")
-nodes/node_b = NodePath("../../Walls/Left2")
-params/bias = 0.99
-angular_limit/enable = true
-angular_limit/bias = 0.99
-
 [node name="Collision" type="CollisionShape" parent="Door"]
 transform = Transform( 0.276136, 0, -3.52831e-09, 0, 0.356854, 0, -3.52831e-09, 0, 0.356854, -0.0383668, 0, 0 )
 shape = SubResource( 1 )
+
+[node name="Hinge" type="HingeJoint" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4.52317, 1.48617, 2.15784 )
+nodes/node_a = NodePath("../Door")
+nodes/node_b = NodePath("../Walls/Left2")
+params/bias = 0.99
+angular_limit/enable = true
+angular_limit/bias = 0.99
+angular_limit/softness = 16.0
+angular_limit/relaxation = 16.0
 
 [node name="Table" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00167847, -1.19209e-07, 2.61102 )
@@ -63,21 +65,7 @@ material/0 = null
 transform = Transform( 0.135, 0, 0, 0, 0.135, 0, 0, 0, 0.135, 0, 0, 0 )
 shape = SubResource( 2 )
 
-[node name="Candle" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.163656, 1.01499, 2.5884 )
-
-[node name="Mesh" type="MeshInstance" parent="Candle"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.092693, 0 )
-mesh = ExtResource( 2 )
-material/0 = null
-
-[node name="OmniLight" type="OmniLight" parent="Candle"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.78218e-05, 0.168082, 0.000798941 )
-light_color = Color( 0.937255, 0.933333, 0.815686, 1 )
-light_energy = 0.67
-light_indirect_energy = 1.97
-light_specular = 0.14
-omni_attenuation = 1.41421
+[node name="Candle" parent="." instance=ExtResource( 2 )]
 
 [node name="Walls" type="Node" parent="."]
 

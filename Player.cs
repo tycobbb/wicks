@@ -67,29 +67,28 @@ public class Player: KinematicBody {
 
     /// update velocity from input
     void Move() {
-        // get local forward
-        var basis = mRoot.Transform.basis;
-
-        // gather velocity from input
-        var v = new Vector3();
+        // gather local velocity from input
+        var vl = new Vector3();
 
         if (Input.IsActionPressed("move_forward")) {
-            v += basis.z * mForward;
+            vl.z += mForward;
         }
 
         if (Input.IsActionPressed("move_backward")) {
-            v -= basis.z * mBackwards;
+            vl.z -= mBackwards;
         }
 
         if (Input.IsActionPressed("move_left")) {
-            v += basis.x * mStrafe;
+            vl.x += mStrafe;
         }
 
         if (Input.IsActionPressed("move_right")) {
-            v -= basis.x * mStrafe;
+            vl.x -= mStrafe;
         }
 
-        // update velocity
+        // update current velocity
+        var b = mRoot.Transform.basis;
+        var v = b.x * vl.x + b.z * vl.z;
         mVelocity.x = v.x;
         mVelocity.z = v.z;
     }

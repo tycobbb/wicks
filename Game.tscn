@@ -30,9 +30,6 @@ __meta__ = {
 [node name="Player" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 script = ExtResource( 1 )
-mForward = 3.0
-mBackwards = 3.0
-mStrafe = 3.0
 
 [node name="Player-collision" type="CollisionShape" parent="Player"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )

@@ -52,5 +52,6 @@ mStrafe = 2.0
 
 [node name="Light" type="DirectionalLight" parent="Debug"]
 transform = Transform( -0.352772, -0.82429, -0.44283, -0.753887, -0.029951, 0.656321, -0.554262, 0.565375, -0.610856, -0.0683928, 6.14553, 0 )
+visible = false
 light_color = Color( 0.584314, 0.870588, 0.6, 1 )
 directional_shadow_mode = 0

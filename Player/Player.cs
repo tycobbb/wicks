@@ -15,6 +15,9 @@ public class Player: KinematicBody {
     /// the player's downwards gravity
     [Export] float mGravity = 1.0f;
 
+    /// The distance the player can grab objects from
+    [Export] float mGrabDistance = 10.0f;
+
     /// the player's mouse sensitivity
     [Export] float mMouseSensitivity = 0.002f;
 
@@ -29,8 +32,15 @@ public class Player: KinematicBody {
     /// the player's physics body
     KinematicBody mBody;
 
-    /// the point the camera is attached to
-    Spatial mViewpoint;
+    /// the player's viewpoint
+    RayCast mView;
+
+    /// the player's hand
+    Spatial mHand;
+
+    // -- props --
+    /// the held object, if any
+    RigidBody mHeld;
 
     // -- lifecycle --
     public override void _Ready() {
@@ -39,7 +49,8 @@ public class Player: KinematicBody {
         // capture node dependencies
         mRoot = this;
         mBody = this;
-        mViewpoint = GetNode<Spatial>("Viewpoint");
+        mView = GetNode<RayCast>("View");
+        mHand = GetNode<Spatial>("View/Hand");
 
         // capture mouse input (i.e. hide cursor)
         Input.SetMouseMode(Input.MouseMode.Captured);
@@ -47,6 +58,23 @@ public class Player: KinematicBody {
 
     public override void _PhysicsProcess(float delta) {
         base._PhysicsProcess(delta);
+
+        DebugDraw.DrawSphere(mHand.GlobalTransform.origin, 0.1f, Colors.Green, 0.05f);
+
+        // try to grab an object
+        if (Input.IsActionJustPressed("grab")) {
+            TryGrab();
+        }
+
+        // continue to hold an object if we have one
+        if (mHeld != null) {
+            Hold();
+
+            // until the button is released
+            if (Input.IsActionJustReleased("grab")) {
+                Release();
+            }
+        }
 
         // update velocity
         Fall(delta);
@@ -105,11 +133,44 @@ public class Player: KinematicBody {
         mRoot.RotateY(-input.x * mMouseSensitivity);
 
         // rotate camera vertically
-        mViewpoint.RotateX(input.y * mMouseSensitivity);
+        mView.RotateX(input.y * mMouseSensitivity);
 
         // clamp rotation
-        var r = mViewpoint.Rotation;
+        var r = mView.Rotation;
         r.x = Mathf.Clamp(r.x, -1.2f, 1.2f);
-        mViewpoint.Rotation = r;
+        mView.Rotation = r;
+    }
+
+    /// tries to grab the first object in view
+    void TryGrab() {
+        mView.Enabled = true;
+        mView.CastTo = mView.Transform.basis.z * mGrabDistance;
+        mView.ForceRaycastUpdate();
+
+        var hit = mView.GetCollider();
+        if (hit is Node n) {
+            Grab(n);
+        }
+
+        mView.Enabled = false;
+    }
+
+    /// grabs the item
+    void Grab(Node node) {
+        mHeld = node.GetNode<RigidBody>("..");
+        mHeld.Mode = RigidBody.ModeEnum.Kinematic;
+    }
+
+    /// holds the item in place
+    void Hold() {
+        mHeld.GlobalTranslate(mHand.GlobalTransform.origin - mHeld.GlobalTransform.origin);
+        mHeld.LinearVelocity = Vector3.Zero;
+        mHeld.AngularVelocity = Vector3.Zero;
+    }
+
+    /// release the held item
+    void Release() {
+        mHeld.Mode = RigidBody.ModeEnum.Rigid;
+        mHeld = null;
     }
 }

@@ -2,6 +2,14 @@ using Godot;
 
 [Tool]
 public class Candle: RigidBody {
+    // -- constants --
+    /// an upright rotation (for an emitter)
+    static readonly Basis sFlameRot = new Basis {
+        x = Vector3.Left,
+        y = Vector3.Back,
+        z = Vector3.Up,
+    };
+
     // -- nodes --
     /// the candle's point light
     Light mLight;
@@ -13,7 +21,6 @@ public class Candle: RigidBody {
     bool mIsLit = false;
 
     // -- lifecycle --
-
     public override void _Ready() {
         // capture node dependencies
         mLight = GetNode<Light>("Light");
@@ -21,6 +28,15 @@ public class Candle: RigidBody {
 
         // set initial state
         SetFlame();
+    }
+
+    public override void _PhysicsProcess(float delta) {
+        base._PhysicsProcess(delta);
+
+        // rotate the flame
+        if (mFlame.Visible) {
+            RotateFlame();
+        }
     }
 
     // -- tools --
@@ -53,5 +69,12 @@ public class Candle: RigidBody {
             mLight.Hide();
             mFlame.Hide();
         }
+    }
+
+    /// ensures the flame is upright
+    void RotateFlame() {
+        var ft = mFlame.GlobalTransform;
+        ft.basis = sFlameRot;
+        mFlame.GlobalTransform = ft;
     }
 }

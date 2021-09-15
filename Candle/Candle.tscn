@@ -23,11 +23,10 @@ material/0 = null
 
 [node name="Light" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.177683, 0 )
-light_color = Color( 0.937255, 0.933333, 0.815686, 1 )
-light_energy = 0.67
-light_indirect_energy = 1.97
-light_specular = 0.14
-omni_attenuation = 1.41421
+light_color = Color( 0.980392, 0.972549, 0.776471, 1 )
+light_energy = 0.8
+omni_range = 10.0
+omni_attenuation = 7.0
 
 [node name="Particles" type="CPUParticles" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.179885, 0 )

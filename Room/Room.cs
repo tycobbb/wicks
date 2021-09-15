@@ -30,6 +30,5 @@ public class Room: Spatial {
 
         // apply force to the door
         mDoor.AddForce(dir * mWind, Vector3.Zero);
-        DebugDraw.DrawArrowRay3D(mDoor.GlobalTransform.origin, dir, mWind, Colors.Green, 0.1f);
     }
 }

@@ -56,8 +56,8 @@ public class Player: KinematicBody {
         mVelocity = mBody.MoveAndSlide(mVelocity, Vector3.Up);
     }
 
-    public override void _UnhandledInput(InputEvent evt) {
-        base._UnhandledInput(evt);
+    public override void _Input(InputEvent evt) {
+        base._Input(evt);
 
         // if this is a mouse event
         if (evt is InputEventMouseMotion e && Input.GetMouseMode() == Input.MouseMode.Captured) {

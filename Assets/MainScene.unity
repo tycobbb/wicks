@@ -789,6 +789,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6305879138088736889, guid: 60904f8181491421a8b0162783a59e6f, type: 3}
+      propertyPath: mDensity
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 6305879138088736889, guid: 60904f8181491421a8b0162783a59e6f, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}

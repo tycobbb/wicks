@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/// a candle that can be lit
 public class Candle: MonoBehaviour {
     // -- nodes --
     /// the candle's point light

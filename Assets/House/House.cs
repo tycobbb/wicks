@@ -1,10 +1,12 @@
 using UnityEngine;
 
+/// a house that protects u against the elements
 public class House: MonoBehaviour {
     // -- tuning --
     [SerializeField] float mWind = 1.0f;
 
     // -- nodes --
+    /// the root transform
     Transform mRoot;
 
     /// the house's front door

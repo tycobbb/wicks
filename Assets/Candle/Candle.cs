@@ -3,7 +3,7 @@ using UnityEngine;
 /// a candle that can be lit
 public class Candle: MonoBehaviour {
     // -- nodes --
-    /// the candle's point light
+    /// the candle's lit flame
     Transform mFlame;
 
     /// the candle's flame
@@ -14,8 +14,8 @@ public class Candle: MonoBehaviour {
         var t = transform;
 
         // get node dependencies
-        mFlame = t.Find("Flame");
-        mFlameEffect = t.Find("Flame/Effect");
+        mFlame = t.Find("Wick/Flame");
+        mFlameEffect = t.Find("Wick/Flame/Effect");
     }
 
     void Update() {
@@ -33,8 +33,25 @@ public class Candle: MonoBehaviour {
     }
 
     // -- commands --
+    /// light the candle
+    void Light() {
+        IsLit = true;
+    }
+
     /// ensures the flame is upright
     void RotateFlame() {
         mFlameEffect.forward = Vector3.up;
+    }
+
+    // -- events --
+    void OnTriggerEnter(Collider other) {
+        if (!IsLit) {
+            return;
+        }
+
+        var candle = other.GetComponent<Candle>();
+        if (candle != null && !candle.IsLit) {
+            candle.Light();
+        }
     }
 }

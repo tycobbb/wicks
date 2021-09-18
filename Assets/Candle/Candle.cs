@@ -13,7 +13,7 @@ public class Candle: MonoBehaviour {
     void Awake() {
         var t = transform;
 
-        // capture node dependencies
+        // get node dependencies
         mFlame = t.Find("Flame");
         mFlameEffect = t.Find("Flame/Effect");
     }

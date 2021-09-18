@@ -10,7 +10,7 @@ public class Pixelate: MonoBehaviour {
 
     // -- config --
     /// the pixelate material
-    [SerializeField] Material mMaterial;
+    [SerializeField] Material mMaterial = null;
 
     /// the pixel density
     [SerializeField] int mDensity = 80;

@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 5183121521823161668}
   - component: {fileID: 5183121521823161671}
   m_Layer: 0
-  m_Name: Walls-right
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 5183121522480305207}
   - component: {fileID: 5183121522480305206}
   m_Layer: 0
-  m_Name: Walls-top
+  m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1088,7 +1088,7 @@ GameObject:
   - component: {fileID: 185633714052789758}
   - component: {fileID: 501878122848489228}
   m_Layer: 0
-  m_Name: Walls-front
+  m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1873,7 +1873,7 @@ GameObject:
   - component: {fileID: 5183121522658245518}
   - component: {fileID: 7431903687122052660}
   m_Layer: 0
-  m_Name: House-door
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1973,7 +1973,7 @@ GameObject:
   - component: {fileID: 5183121522861845194}
   - component: {fileID: 5183121522861845189}
   m_Layer: 0
-  m_Name: Walls-left
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2389,7 +2389,7 @@ GameObject:
   - component: {fileID: 5183121523581149851}
   - component: {fileID: 5183121523581149850}
   m_Layer: 0
-  m_Name: Walls-back
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

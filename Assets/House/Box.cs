@@ -4,10 +4,10 @@ using UnityEngine;
 public class Box: MonoBehaviour {
     // -- config --
     /// the candle prototype
-    [SerializeField] GameObject mCandle;
+    [SerializeField] GameObject mCandle = null;
 
     /// the number of candles to create
-    [SerializeField] int mCount;
+    [SerializeField] int mCount = 420;
 
     // -- nodes --
     /// the root transform

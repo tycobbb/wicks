@@ -41,11 +41,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6968352721047889056}
+  - component: {fileID: 1851746940352458334}
   - component: {fileID: 5847560706028309601}
   - component: {fileID: 4663660781146967849}
   - component: {fileID: 7846728591017708640}
-  - component: {fileID: 1851746940352458334}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Candle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,6 +68,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1851746940352458334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3668973037709232145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab7e93440ce94e419e2cef5bc945c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &5847560706028309601
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -111,18 +123,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.02, y: 0.01, z: 0.02}
   m_Center: {x: 0, y: -0.092, z: 0}
---- !u!114 &1851746940352458334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3668973037709232145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab7e93440ce94e419e2cef5bc945c01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4236564400965335800
 GameObject:
   m_ObjectHideFlags: 0

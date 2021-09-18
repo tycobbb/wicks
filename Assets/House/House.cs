@@ -14,9 +14,11 @@ public class House: MonoBehaviour {
 
     // -- lifecycle --
     void Awake() {
-        // capture node dependencies
-        mRoot = GetComponent<Transform>();
-        mDoor = GameObject.Find("House-door").GetComponent<Rigidbody>();
+        var t = transform;
+
+        // get node dependencies
+        mRoot = t;
+        mDoor = t.Find("Door").GetComponent<Rigidbody>();
     }
 
     void FixedUpdate() {

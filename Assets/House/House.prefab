@@ -50,7 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mCandle: {fileID: 8197571271894614035}
-  mCount: 99
+  mCount: 420
+  mSpawnRate: 5
 --- !u!65 &4797484512053703899
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2772,10 +2773,6 @@ PrefabInstance:
     - target: {fileID: 3668973037709232145, guid: 728feffbce01f4696a20d13617ba91c2, type: 3}
       propertyPath: m_Name
       value: Candle
-      objectReference: {fileID: 0}
-    - target: {fileID: 6491814600307029351, guid: 728feffbce01f4696a20d13617ba91c2, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6968352721047889056, guid: 728feffbce01f4696a20d13617ba91c2, type: 3}
       propertyPath: m_RootOrder

@@ -33,6 +33,11 @@ public class Candle: MonoBehaviour {
     }
 
     // -- commands --
+    /// apply wind force to the candle
+    public void AddWind(Vector3 wind) {
+        Debug.Log($"blowing on {name} @ {Time.time}");
+    }
+
     /// light the candle
     void Light() {
         IsLit = true;

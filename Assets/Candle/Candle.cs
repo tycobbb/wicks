@@ -2,7 +2,14 @@ using UnityEngine;
 
 /// a candle that can be lit
 public class Candle: MonoBehaviour {
+    // -- constants --
+    static int sWickLayer = -1;
+    static int sFlameLayer = -1;
+
     // -- nodes --
+    /// the candle's wick
+    GameObject mWick;
+
     /// the candle's lit flame
     Transform mFlame;
 
@@ -14,14 +21,28 @@ public class Candle: MonoBehaviour {
         var t = transform;
 
         // get node dependencies
+        mWick = t.Find("Wick").gameObject;
         mFlame = t.Find("Wick/Flame");
         mFlameEffect = t.Find("Wick/Flame/Effect");
+
+        // set statics
+        if (sWickLayer == -1) {
+            sWickLayer = LayerMask.NameToLayer("Wick");
+            sFlameLayer = LayerMask.NameToLayer("Flame");
+        }
+    }
+
+    void Start() {
+        // ensure the candle is configured properly if initially lit
+        if (IsLit) {
+            SetLit(true);
+        }
     }
 
     void Update() {
         // rotate the flame
         if (mFlame) {
-            RotateFlame();
+            mFlameEffect.forward = Vector3.up;
         }
     }
 
@@ -29,7 +50,7 @@ public class Candle: MonoBehaviour {
     /// if the candle is lit or not (hot prop)
     public bool IsLit {
         get => mFlame.IsActive();
-        set => mFlame.SetActive(value);
+        set => SetLit(value);
     }
 
     // -- commands --
@@ -38,14 +59,13 @@ public class Candle: MonoBehaviour {
         Debug.Log($"blowing on {name} @ {Time.time}");
     }
 
-    /// light the candle
-    void Light() {
-        IsLit = true;
-    }
+    /// lights/extinguishes the candle
+    void SetLit(bool isLit) {
+        // flip layer so flames and wicks can collide
+        mWick.layer = isLit ? sFlameLayer : sWickLayer;
 
-    /// ensures the flame is upright
-    void RotateFlame() {
-        mFlameEffect.forward = Vector3.up;
+        // turn on the light/particles
+        mFlame.SetActive(isLit);
     }
 
     // -- events --
@@ -56,7 +76,7 @@ public class Candle: MonoBehaviour {
 
         var candle = other.GetComponent<Candle>();
         if (candle != null && !candle.IsLit) {
-            candle.Light();
+            candle.IsLit = true;
         }
     }
 }

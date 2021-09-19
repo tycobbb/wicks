@@ -106,20 +106,21 @@ public class Player: MonoBehaviour {
     /// hold the item in place
     void HoldItem() {
         // get hand direction
-        var up = mHand.up;
         var right = mHand.right;
         var forward = mHand.forward;
 
         // build position from hand & grab
-        var pos = mHand.position;
         var gd = mGrab.Offset;
-        pos += forward * gd.y;
+        var pos = mHand.position;
         pos += right * gd.x;
+        pos += forward * gd.y;
 
-        // build rotation from hand & grab
+        // build rotation from hand & grab (project forward onto xy-plane so
+        // candle is upright even when looking up/down)
+        var fwd = Vector3.ProjectOnPlane(forward, Vector3.up);
         var rot = Quaternion.LookRotation(
-            forward,
-            Quaternion.AngleAxis(mGrab.Angle, forward) * up
+            fwd,
+            Quaternion.AngleAxis(mGrab.Angle, fwd) * Vector3.up
         );
 
         // move and rotate item towards hand

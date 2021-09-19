@@ -1,6 +1,7 @@
 using Hertzole.GoldPlayer;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 /// the player's grab action
 public class Grab: MonoBehaviour {
@@ -11,10 +12,19 @@ public class Grab: MonoBehaviour {
     /// the maximum rotation
     [SerializeField] float mMaxRotation = 95.0f;
 
+    /// the move speed
+    [SerializeField] float mMoveSpeed = 0.1f;
+
     /// the maximum offset
-    [SerializeField] float mMaxOffset = 1.0f;
+    [SerializeField] Vector2 mMaxMoveOffset = new Vector2(0.6f, 1.0f);
+
+    /// the look speed multiplier when moving
+    [SerializeField] float mMoveLookSpeed = 0.5f;
 
     // -- nodes --
+    /// the gold player camera
+    PlayerCamera mCamera;
+
     /// all the player's inputs
     InputActionAsset mInputs;
 
@@ -34,9 +44,6 @@ public class Grab: MonoBehaviour {
     /// the rotate right input
     InputAction mRotateRight;
 
-    /// the default look input
-    InputAction mLook;
-
     // -- props --
     /// the aggregate angle
     float mAngle = 0.0f;
@@ -44,9 +51,16 @@ public class Grab: MonoBehaviour {
     /// the aggregate move offset
     Vector2 mOffset;
 
+    /// the frame the last move started
+    float mMoveStartTime = 0.0f;
+
+    /// the look sensitivity when not moving grab
+    Vector2 mFreeLookSensitivity;
+
     // -- lifecycle --
     void Awake() {
         // get node dependencies
+        mCamera = GetComponent<GoldPlayerController>().Camera;
         mInputs = GetComponent<GoldPlayerInputSystem>().InputAsset;
 
         // get actions
@@ -55,7 +69,9 @@ public class Grab: MonoBehaviour {
         mMove = mInputs.FindAction("Grab-Move");
         mRotateLeft = mInputs.FindAction("Grab-RotateLeft");
         mRotateRight = mInputs.FindAction("Grab-RotateRight");
-        mLook = mInputs.FindAction("Look");
+
+        // get props
+        mFreeLookSensitivity = mCamera.MouseSensitivity;
     }
 
     void OnEnable() {
@@ -65,16 +81,21 @@ public class Grab: MonoBehaviour {
     void Update() {
         // while grabbing
         if (mGrab.IsPressed()) {
-            // aggregate the rotation
-            if (mRotateLeft.IsPressed()) {
-                Rotate(isLeft: true);
+            // check rotation inputs
+            var isLeftPressed = mRotateLeft.IsPressed();
+            var isRightPressed = mRotateRight.IsPressed();
+
+            // if only one is pressed, rotate
+            if (isLeftPressed != isRightPressed) {
+                Rotate(isLeftPressed);
             }
 
-            if (mRotateRight.IsPressed()) {
-                Rotate(isLeft: false);
+            // if none are pressed and one was just released, finish rotate
+            if (!isLeftPressed && mRotateRight.WasReleasedThisFrame() || !isRightPressed && mRotateLeft.WasReleasedThisFrame()) {
+                FinishRotate();
             }
 
-            // when move is pressed, disable look
+            // when move is pressed
             if (mMoveMode.WasPressedThisFrame()) {
                 StartMove();
             }
@@ -84,7 +105,7 @@ public class Grab: MonoBehaviour {
                 Move();
             }
 
-            // when move is released, reset move state
+            // when move is released
             if (mMoveMode.WasReleasedThisFrame()) {
                 FinishMove();
             }
@@ -108,27 +129,48 @@ public class Grab: MonoBehaviour {
     // -- commands --
     /// rotate the item
     void Rotate(bool isLeft) {
-        mAngle += isLeft ? mRotateSpeed : -mRotateSpeed;
-        mAngle = Mathf.Clamp(mAngle, -mMaxRotation, mMaxRotation);
+        var delta = isLeft ? mRotateSpeed : -mRotateSpeed;
+        mAngle = Mathf.Clamp(mAngle + delta, -mMaxRotation, mMaxRotation);
+    }
+
+    /// stop rotating the item
+    void FinishRotate() {
+        // snap to zero if close
+        if (Mathf.Abs(mAngle) <= 25.0f) {
+            mAngle = 0.0f;
+        }
     }
 
     /// start move action
     void StartMove() {
-        mLook.Disable();
+        mMoveStartTime = Time.time;
+
+        // lower look sensitivity
+        mCamera.MouseSensitivity = mFreeLookSensitivity * mMoveLookSpeed;
     }
 
     /// aggregate the move
     void Move() {
-        mOffset += mMove.ReadValue<Vector2>();;
+        // aggregate move offset
+        mOffset += mMove.ReadValue<Vector2>() * mMoveSpeed;
 
         // clamp offset to reasonable bounds
-        mOffset.x = Mathf.Clamp(mOffset.x, -mMaxOffset, mMaxOffset);
-        mOffset.y = Mathf.Clamp(mOffset.y, 0, mMaxOffset);
+        var xMax = mMaxMoveOffset.x;
+        var yMax = mMaxMoveOffset.y;
+        mOffset.x = Mathf.Clamp(mOffset.x, -xMax, xMax);
+        mOffset.y = Mathf.Clamp(mOffset.y, 0, yMax);
     }
 
     /// finish move action
     void FinishMove() {
-        mLook.Enable();
+        // if the move time was short, this was a tap/click
+        if (Time.time - mMoveStartTime <= 0.25f) {
+            // reset the offset
+            mOffset = Vector2.zero;
+        }
+
+        // restore look sensitivity
+        mCamera.MouseSensitivity = mFreeLookSensitivity;
     }
 
     /// finish grab action

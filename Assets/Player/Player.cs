@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player: MonoBehaviour {
     // -- constants --
@@ -13,7 +14,7 @@ public class Player: MonoBehaviour {
     [SerializeField] float mGrabRange = 10.0f;
 
     /// the radius of the grab sphere
-    [SerializeField] float mGrabSlack = 0.5f;
+    [SerializeField] float mGrabTolerance = 0.5f;
 
     // -- nodes --
     /// the player's viewpoint
@@ -68,7 +69,7 @@ public class Player: MonoBehaviour {
     void TryGrabItem() {
         var nHits = Physics.SphereCastNonAlloc(
             mView.position,
-            mGrabSlack,
+            mGrabTolerance,
             mView.forward,
             mHits,
             mGrabRange,

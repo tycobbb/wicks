@@ -162,9 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mGrabRange: 10
-  mGrabSlack: 0.5
-  mGrabRotateSpeed: 4
-  mGrabMaxRotation: 95
+  mGrabTolerance: 0.1
 --- !u!114 &7610240689253673316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +175,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0abbc52a324e3e986eab1ae6b7bfdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mRotateSpeed: 4
+  mMaxRotation: 95
+  mMoveSpeed: 0.1
+  mMaxMoveOffset: {x: 0.8, y: 1}
+  mMoveLookSpeed: 0.5
 --- !u!143 &2358443590312021543
 CharacterController:
   m_ObjectHideFlags: 0
@@ -235,7 +238,7 @@ MonoBehaviour:
       forwardSpeed: 3
       sidewaysSpeed: 2.5
       backwardsSpeed: 2
-    canRun: 1
+    canRun: 0
     runToggleMode: 0
     runSpeeds:
       forwardSpeed: 7
@@ -250,7 +253,7 @@ MonoBehaviour:
       regenRateStill: 0.8
       regenRateMoving: 0.5
       regenWait: 1
-    canJump: 1
+    canJump: 0
     jumpingRequiresStamina: 0
     jumpStaminaRequire: 1
     jumpStaminaCost: 1
@@ -259,7 +262,7 @@ MonoBehaviour:
     airJumpTime: 0.1
     airJumpsAmount: 0
     allowAirJumpDirectionChange: 1
-    canCrouch: 1
+    canCrouch: 0
     crouchToggleMode: 0
     crouchSpeeds:
       forwardSpeed: 2
@@ -390,12 +393,6 @@ MonoBehaviour:
     action: {fileID: -1246895598473198080, guid: c290be556fe3b4b4ebf7b4bcebc0db91, type: 3}
   - actionName: Jump
     action: {fileID: 335763634227698153, guid: c290be556fe3b4b4ebf7b4bcebc0db91, type: 3}
-  - actionName: Run
-    action: {fileID: 5190739044734946418, guid: c290be556fe3b4b4ebf7b4bcebc0db91, type: 3}
-  - actionName: Crouch
-    action: {fileID: 5064262545289094806, guid: c290be556fe3b4b4ebf7b4bcebc0db91, type: 3}
-  - actionName: Interact
-    action: {fileID: -5548793354506133487, guid: c290be556fe3b4b4ebf7b4bcebc0db91, type: 3}
   autoEnableInput: 1
   autoDisableInput: 1
 --- !u!1 &2358443590606240888

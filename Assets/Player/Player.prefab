@@ -163,6 +163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mGrabRange: 10
   mGrabSlack: 0.5
+  mGrabRotateSpeed: 4
+  mGrabMaxRotation: 95
 --- !u!143 &2358443590312021543
 CharacterController:
   m_ObjectHideFlags: 0
@@ -842,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mMaterial: {fileID: 2100000, guid: 8a0fd14a534cc4707b951952f8623351, type: 2}
-  mDensity: 80
+  mDensity: 128
 --- !u!1 &2358443591516315033
 GameObject:
   m_ObjectHideFlags: 0

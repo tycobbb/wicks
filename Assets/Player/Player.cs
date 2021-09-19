@@ -136,17 +136,17 @@ public class Player: MonoBehaviour {
         mHeldAngle = 0.0f;
 
         // disable physics while holding the item
-        item.isKinematic = true;
+        mHeld.isKinematic = true;
 
         // disable collisions w/ player
-        item.gameObject.layer = sHeldItemLayer;
+        SetHeldItemLayer(sHeldItemLayer);
 
         // reorient it
-        item.transform.up = Vector3.up;
+        mHeld.transform.up = Vector3.up;
 
         // clear its physics state
-        item.velocity = Vector3.zero;
-        item.angularVelocity = Vector3.zero;
+        mHeld.velocity = Vector3.zero;
+        mHeld.angularVelocity = Vector3.zero;
     }
 
     /// rotate the item
@@ -174,10 +174,16 @@ public class Player: MonoBehaviour {
     void ReleaseItem() {
         // reset the item
         mHeld.isKinematic = false;
-        mHeld.gameObject.layer = sItemLayer;
+        SetHeldItemLayer(sItemLayer);
 
         // release it from the hand
         mHeld = null;
         mHeldAngle = 0.0f;
+    }
+
+    // -- queries --
+    void SetHeldItemLayer(int layer) {
+        var c = mHeld.GetComponentInChildren<Collider>();
+        c.gameObject.layer = layer;
     }
 }

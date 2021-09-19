@@ -1,6 +1,4 @@
-using Hertzole.GoldPlayer;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player: MonoBehaviour {
     // -- constants --
@@ -17,12 +15,6 @@ public class Player: MonoBehaviour {
     /// the radius of the grab sphere
     [SerializeField] float mGrabSlack = 0.5f;
 
-    /// the speed the held item rotates every frame
-    [SerializeField] float mGrabRotateSpeed = 4.0f;
-
-    /// the maximum rotation for the held item
-    [SerializeField] float mGrabMaxRotation = 95.0f;
-
     // -- nodes --
     /// the player's viewpoint
     Transform mView;
@@ -30,25 +22,12 @@ public class Player: MonoBehaviour {
     /// the player's hand
     Transform mHand;
 
-    // -- inputs --
-    /// all the player's inputs
-    InputActionAsset mInputs;
-
-    /// the grab input
-    InputAction mGrab;
-
-    /// the grab rotate left input
-    InputAction mGrabRotateLeft;
-
-    /// the grab rotate right input
-    InputAction mGrabRotateRight;
-
     // -- props --
+    /// the grab input
+    Grab mGrab;
+
     /// the held item, if any
     Rigidbody mHeld;
-
-    /// the angle of the held item
-    float mHeldAngle = 0.0f;
 
     /// a shared buffer for raycast hits
     readonly RaycastHit[] mHits = new RaycastHit[1];
@@ -58,14 +37,8 @@ public class Player: MonoBehaviour {
         // get node dependencies
         var t = transform;
         mView = t.Find("Head/View");
-        mHand = t.Find("Hand");
-
-        // bind inputs
-        var inputs = GetComponent<GoldPlayerInputSystem>().InputAsset;
-        mInputs = inputs;
-        mGrab = inputs.FindAction("Grab");
-        mGrabRotateLeft = inputs.FindAction("Grab-RotateLeft");
-        mGrabRotateRight = inputs.FindAction("Grab-RotateRight");
+        mHand = t.Find("Head/View/Hand");
+        mGrab = GetComponent<Grab>();
 
         // set statics
         if (sItemLayer == -1) {
@@ -74,27 +47,13 @@ public class Player: MonoBehaviour {
         }
     }
 
-    void OnEnable() {
-        mInputs.Enable();
-    }
-
     void Update() {
         if (mGrab.WasPressedThisFrame()) {
             TryGrabItem();
         }
 
-        if (mHeld != null) {
-            if (mGrabRotateLeft.IsPressed()) {
-                RotateItem(isLeft: true);
-            }
-
-            if (mGrabRotateRight.IsPressed()) {
-                RotateItem(isLeft: false);
-            }
-
-            if (mGrab.WasReleasedThisFrame()) {
-                ReleaseItem();
-            }
+        if (mHeld != null && mGrab.WasReleasedThisFrame()) {
+            ReleaseItem();
         }
     }
 
@@ -102,10 +61,6 @@ public class Player: MonoBehaviour {
         if (mHeld != null) {
             HoldItem();
         }
-    }
-
-    void OnDisable() {
-        mInputs.Disable();
     }
 
     // -- commands--
@@ -133,7 +88,6 @@ public class Player: MonoBehaviour {
     /// grabs the item
     void GrabItem(Rigidbody item) {
         mHeld = item;
-        mHeldAngle = 0.0f;
 
         // disable physics while holding the item
         mHeld.isKinematic = true;
@@ -149,25 +103,29 @@ public class Player: MonoBehaviour {
         mHeld.angularVelocity = Vector3.zero;
     }
 
-    /// rotate the item
-    void RotateItem(bool isLeft) {
-        mHeldAngle += isLeft ? mGrabRotateSpeed : -mGrabRotateSpeed;
-        mHeldAngle = Mathf.Clamp(mHeldAngle, -mGrabMaxRotation, mGrabMaxRotation);
-    }
-
     /// hold the item in place
     void HoldItem() {
-        // build rotation from hand position
+        // get hand direction
+        var up = mHand.up;
+        var right = mHand.right;
         var forward = mHand.forward;
-        var rotation = Quaternion.LookRotation(
+
+        // build position from hand & grab
+        var pos = mHand.position;
+        var gd = mGrab.Offset;
+        pos += forward * gd.y;
+        pos += right * gd.x;
+
+        // build rotation from hand & grab
+        var rot = Quaternion.LookRotation(
             forward,
-            Quaternion.AngleAxis(mHeldAngle, forward) * mHand.up
+            Quaternion.AngleAxis(mGrab.Angle, forward) * up
         );
 
         // move and rotate item towards hand
         var ti = mHeld.transform;
-        ti.position = Vector3.Lerp(ti.position, mHand.position, 0.1f);
-        ti.rotation = Quaternion.Lerp(ti.rotation, rotation, 0.1f);
+        ti.position = Vector3.Lerp(ti.position, pos, 0.1f);
+        ti.rotation = Quaternion.Lerp(ti.rotation, rot, 0.1f);
     }
 
     /// release the held item
@@ -178,7 +136,6 @@ public class Player: MonoBehaviour {
 
         // release it from the hand
         mHeld = null;
-        mHeldAngle = 0.0f;
     }
 
     // -- queries --

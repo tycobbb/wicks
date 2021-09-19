@@ -69,6 +69,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Grab-MoveMode",
+                    "type": "Button",
+                    "id": "440c2690-60bd-432b-aa0e-fd7589de7d3b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Grab-Move",
+                    "type": "Value",
+                    "id": "f270b92a-5008-4968-9269-bc449e89e769",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Grab-RotateLeft",
                     "type": "Button",
                     "id": "2a91bbe8-7e0a-4f96-bacc-07157956570c",
@@ -294,6 +312,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Grab-RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cb0c675b-3e93-456d-a6a1-12748239dd38",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab-MoveMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97c6516b-09be-42eb-9521-0398d8673527",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab-MoveMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39262cdf-9c7c-4599-9531-69f3276b199c",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=0.1,y=0.1)",
+                    "groups": "Keyboard",
+                    "action": "Grab-Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3640afac-dab2-4f36-ad73-a8aedc25df68",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=2,y=2)",
+                    "groups": "Keyboard",
+                    "action": "Grab-Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -6,6 +6,10 @@ public class Candle: MonoBehaviour {
     static int sWickLayer = -1;
     static int sFlameLayer = -1;
 
+    // -- tuning --
+    /// the wind speed that extinguishes the candle
+    [SerializeField] float mWindThreshold = 1.0f;
+
     // -- nodes --
     /// the candle's wick
     GameObject mWick;
@@ -65,7 +69,7 @@ public class Candle: MonoBehaviour {
             return;
         }
 
-        if (mWind > 1.0f) {
+        if (mWind > mWindThreshold) {
             SetLit(false);
         }
     }

@@ -235,9 +235,9 @@ MonoBehaviour:
     canMoveAround: 1
     unscaledTime: 0
     walkingSpeeds:
-      forwardSpeed: 3
-      sidewaysSpeed: 2.5
-      backwardsSpeed: 2
+      forwardSpeed: 2
+      sidewaysSpeed: 1.5
+      backwardsSpeed: 1
     canRun: 0
     runToggleMode: 0
     runSpeeds:

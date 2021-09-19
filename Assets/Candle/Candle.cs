@@ -16,6 +16,10 @@ public class Candle: MonoBehaviour {
     /// the candle's flame
     Transform mFlameEffect;
 
+    // -- props --
+    /// the wind currently affecting the candle
+    float mWind;
+
     // -- lifecycle --
     void Awake() {
         var t = transform;
@@ -55,8 +59,15 @@ public class Candle: MonoBehaviour {
 
     // -- commands --
     /// apply wind force to the candle
-    public void AddWind(Vector3 wind) {
-        Debug.Log($"blowing on {name} @ {Time.time}");
+    public void AddWind(float wind) {
+        mWind = wind;
+        if (!IsLit) {
+            return;
+        }
+
+        if (mWind > 1.0f) {
+            SetLit(false);
+        }
     }
 
     /// lights/extinguishes the candle

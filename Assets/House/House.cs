@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 /// a house that protects u against the elements
@@ -7,10 +8,26 @@ public class House: MonoBehaviour {
     /// a mask for objects affected by wind
     static int sWindMask = -1;
 
-    // -- nodes --
-    /// the root transform
-    Transform mRoot;
+    // -- tuning --
+    /// the minimum wind force
+    [SerializeField] [Range(0.0f, 10.0f)] float mWindMin = 0.0f;
 
+    /// the maximum wind force
+    [SerializeField] [Range(0.0f, 10.0f)] float mWindMax = 1.0f;
+
+    /// the curve applied when seeding the initial wind distance
+    [SerializeField] AnimationCurve mWindDist = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
+
+    /// the curve applied when seeding the initial wind speed
+    [FormerlySerializedAs("mWindCurve")] [SerializeField]
+    AnimationCurve mWindSpeed = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
+
+    /// the curve applied when adding force to objects as a function of distance from
+    /// the wind source
+    [FormerlySerializedAs("mWindDistCurve")] [SerializeField]
+    AnimationCurve mWindFalloff = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 0.0f);
+
+    // -- nodes --
     /// the house's front door
     Rigidbody mDoor;
 
@@ -34,7 +51,6 @@ public class House: MonoBehaviour {
     void Awake() {
         // get node dependencies
         var t = transform;
-        mRoot = t;
         mDoor = t.Find("Door").GetComponent<Rigidbody>();
         mWindStart = t.Find("Wind/Start");
         mWindGrow = t.Find("Wind/Grow");
@@ -58,10 +74,19 @@ public class House: MonoBehaviour {
 
     // -- commands --
     void AddWind() {
-        // calc wind length
-        var len = (mWindLeg1 + mWindLeg2) * Random.value;
+        // calc wind attrs
+        var spd = Mathf.Lerp(
+            mWindMin,
+            mWindMax,
+            mWindSpeed.Evaluate(Random.value)
+        );
 
-        // capture props common to both legs
+        var len = Mathf.Lerp(
+            0.0f,
+            mWindLeg1 + mWindLeg2,
+            mWindDist.Evaluate(Random.value)
+        );
+
         var dir = mWindStart.forward;
 
         // cast the first leg through the door
@@ -76,12 +101,12 @@ public class House: MonoBehaviour {
 
         // if we hit the door, apply wind to it and nothing else
         if (nHits != 0 && mHits[0].rigidbody == mDoor) {
-            AddWind(1);
+            AddWind(1, spd);
             return;
         }
 
         // otherwise, add wind to everything hit
-        AddWind(nHits);
+        AddWind(nHits, spd);
 
         // get the length of the second leg
         len -= mWindLeg1;
@@ -100,10 +125,14 @@ public class House: MonoBehaviour {
         );
 
         // add wind to the hits
-        AddWind(nHits);
+        AddWind(nHits, spd);
     }
 
-    void AddWind(int nHits) {
+    void AddWind(int nHits, float speed) {
+        // calc start pos and max distance
+        var z0 = mWindStart.position.z;
+        var dMax = mWindLeg1 + mWindLeg2;
+
         // for each hit
         for (var i = 0; i < nHits; i++) {
             var hit = mHits[i];
@@ -115,14 +144,18 @@ public class House: MonoBehaviour {
             }
 
             // if door, push it open
-            if (body.CompareTag("Door")) {
-                body.AddForce(1.0f * mWindStart.forward);
+            if (body == mDoor) {
+                body.AddForce(speed * mWindStart.forward);
             }
             // if candle, try to blow it out
             else if (body.CompareTag("Candle")) {
-                body.GetComponent<Candle>().AddWind(
-                    1.0f * mWindStart.forward
-                );
+                // determine wind speed as a fn of z distance from source
+                var dz = body.transform.position.z - z0;
+                var pct = Mathf.InverseLerp(0.0f, dMax, dz);
+                var spd = speed * mWindFalloff.Evaluate(pct);
+
+                // add the wind to the candle
+                body.GetComponent<Candle>().AddWind(spd);
             }
         }
     }

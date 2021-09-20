@@ -1,5 +1,6 @@
 # code
 - [skybox shader](https://github.com/johanar/godot-skybox-shader) by johanar
+- [better minimal webgl template](https://seansleblanc.itch.io/better-minimal-webgl-template) by sean s. leblanc
 
 # models
 - table by poly by google [cc-by](https://creativecommons.org/licenses/by/3.0/) via [poly pizza](https://poly.pizza/m/fdtyboniyxa)

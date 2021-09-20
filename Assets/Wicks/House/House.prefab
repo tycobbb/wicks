@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7207665873568364685}
   - component: {fileID: 5175414243530401639}
   - component: {fileID: 7178850305264630086}
+  - component: {fileID: 5950703837480868849}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -80,8 +81,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mCandle: {fileID: 8197571271894614035}
-  mCount: 420
-  mSpawnRate: 5
+  mSize: 10
+  mSpawnRate: 1
 --- !u!65 &4797484512053703899
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -147,6 +148,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6901516, y: 0.0505923, z: 0.8022368}
   m_Center: {x: 0, y: -0.16, z: 0}
+--- !u!65 &5950703837480868849
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250107831916600998}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6901516, y: 0.5035269, z: 0.8022368}
+  m_Center: {x: 0, y: 0.066467315, z: 0}
 --- !u!1 &322919209537725155
 GameObject:
   m_ObjectHideFlags: 0

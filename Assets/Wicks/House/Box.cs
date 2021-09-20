@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// a box for spawning candles
 public class Box: MonoBehaviour {
@@ -8,14 +9,21 @@ public class Box: MonoBehaviour {
     [SerializeField] GameObject mCandle = null;
 
     /// the number of candles to create
-    [SerializeField] int mCount = 420;
+    [SerializeField] int mSize = 10;
 
-    /// the number of candles to spawn per frame
-    [SerializeField] int mSpawnRate = 5;
+    /// the interval between candles in seconds
+    [SerializeField] float mSpawnRate = 1.0f;
 
     // -- nodes --
     /// the root transform
     Transform mRoot;
+
+    // -- props --
+    /// the number of candles in the box
+    int mCurr = 0;
+
+    /// the total number of candles spawned
+    int mTotal = 0;
 
     // -- lifecycle --
     void Awake() {
@@ -24,23 +32,42 @@ public class Box: MonoBehaviour {
     }
 
     void Start() {
-        // spawn a bunch of candles
         StartCoroutine(SpawnCandles());
     }
 
     // -- commands --
-    /// spawn candles over a few frames
+    /// spawn a candle every so often as needed
     IEnumerator SpawnCandles() {
-        // make a bunch of candles
-        for (var i = 1; i <= mCount; i++) {
-            var obj = Instantiate(mCandle,  mRoot);
-            obj.name = $"Candle{i}";
-            obj.transform.localPosition = Vector3.zero;
-            obj.GetComponent<Candle>().IsLit = false;
+        while (true) {
+            if (mCurr < mSize) {
+                // get next candle id
+                var next = mTotal + 1;
 
-            if (i % mSpawnRate == 0) {
-                yield return new WaitForEndOfFrame();
+                // spawn a candle
+                var obj = Instantiate(mCandle, mRoot);
+                obj.name = $"Candle{next}";
+                obj.transform.localPosition = Vector3.zero;
+                obj.GetComponent<Candle>().IsLit = false;
+
+                // update counts
+                mTotal = next;
             }
+
+            // wait to check again
+            yield return new WaitForSeconds(mSpawnRate);
+        }
+    }
+
+    // -- events --
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Candle")) {
+            mCurr += 1;
+        }
+    }
+
+    void OnTriggerExit(Collider other) {
+        if (other.CompareTag("Candle")) {
+            mCurr -= 1;
         }
     }
 }

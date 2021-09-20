@@ -69,7 +69,9 @@ public class Grab: MonoBehaviour {
         mMove = mInputs.FindAction("Grab-Move");
         mRotateLeft = mInputs.FindAction("Grab-RotateLeft");
         mRotateRight = mInputs.FindAction("Grab-RotateRight");
+    }
 
+    void Start() {
         // get props
         mFreeLookSensitivity = mCamera.MouseSensitivity;
     }

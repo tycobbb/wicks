@@ -14,7 +14,7 @@ public class Player: MonoBehaviour {
     [SerializeField] float mGrabRange = 10.0f;
 
     /// the radius of the grab sphere
-    [SerializeField] float mGrabTolerance = 0.5f;
+    [SerializeField] Vector2 mGrabTolerance = new Vector3(0.1f, 1.0f);
 
     // -- nodes --
     /// the player's viewpoint
@@ -26,6 +26,9 @@ public class Player: MonoBehaviour {
     // -- props --
     /// the grab input
     Grab mGrab;
+
+    /// the grab box cast half extents
+    Vector3 mGrabShape;
 
     /// the held item, if any
     Rigidbody mHeld;
@@ -40,6 +43,13 @@ public class Player: MonoBehaviour {
         mView = t.Find("Head/View");
         mHand = t.Find("Head/View/Hand");
         mGrab = GetComponent<Grab>();
+
+        // set props
+        mGrabShape = new Vector3(
+            mGrabTolerance.x,
+            mGrabTolerance.y,
+            mGrabTolerance.x
+        );
 
         // set statics
         if (sItemLayer == -1) {
@@ -67,11 +77,16 @@ public class Player: MonoBehaviour {
     // -- commands--
     /// tries to grab the first item in view
     void TryGrabItem() {
-        var nHits = Physics.SphereCastNonAlloc(
-            mView.position,
-            mGrabTolerance,
-            mView.forward,
+        var vPos = mView.position;
+        var vDir = mView.forward;
+
+        // cast from the viewpoint
+        var nHits = Physics.BoxCastNonAlloc(
+            vPos,
+            mGrabShape,
+            vDir,
             mHits,
+            Quaternion.AngleAxis(45.0f, mView.up),
             mGrabRange,
             1 << sItemLayer
         );
@@ -80,9 +95,45 @@ public class Player: MonoBehaviour {
             return;
         }
 
-        var body = mHits[0].rigidbody;
-        if (body != null) {
-            GrabItem(body);
+        // a helper to get the view/hit overlap
+        float GetOverlap(RaycastHit hit) {
+            return Vector3.Dot(vDir, Vector3.Normalize(hit.point - vPos));
+        }
+
+        // find the nearest, most central hit
+        var initDist = -1.0f;
+        var curr = null as Rigidbody;
+        var currOverlap = -1.0f;
+
+        // for each hit
+        for (var i = 0; i < nHits; i++) {
+            var hit = mHits[0];
+
+            // starting with the closest
+            if (curr == null) {
+                initDist = hit.distance;
+                curr = hit.rigidbody;
+                currOverlap = GetOverlap(hit);
+                continue;
+            }
+
+            // check for hits that are also close
+            var delta = hit.distance - initDist;
+            if (delta >= 0.1f) {
+                break;
+            }
+
+            // and focus the one that is most central
+            var overlap = GetOverlap(hit);
+            if (overlap > currOverlap) {
+                curr = hit.rigidbody;
+                currOverlap = overlap;
+            }
+        }
+
+        // grab the item, if any
+        if (curr != null) {
+            GrabItem(curr);
         }
     }
 

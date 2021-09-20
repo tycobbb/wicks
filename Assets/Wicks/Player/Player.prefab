@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mGrabRange: 10
-  mGrabTolerance: 0.1
+  mGrabTolerance: {x: 0.1, y: 1}
 --- !u!114 &7610240689253673316
 MonoBehaviour:
   m_ObjectHideFlags: 0

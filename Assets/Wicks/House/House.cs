@@ -19,13 +19,11 @@ public class House: MonoBehaviour {
     [SerializeField] AnimationCurve mWindDist = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
 
     /// the curve applied when seeding the initial wind speed
-    [FormerlySerializedAs("mWindCurve")] [SerializeField]
-    AnimationCurve mWindSpeed = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
+    [SerializeField] AnimationCurve mWindSpeed = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
 
     /// the curve applied when adding force to objects as a function of distance from
     /// the wind source
-    [FormerlySerializedAs("mWindDistCurve")] [SerializeField]
-    AnimationCurve mWindFalloff = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 0.0f);
+    [SerializeField] AnimationCurve mWindFalloff = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 0.0f);
 
     // -- nodes --
     /// the house's front door
@@ -146,9 +144,11 @@ public class House: MonoBehaviour {
             // if door, push it open
             if (body == mDoor) {
                 body.AddForce(speed * mWindStart.forward);
+                return;
             }
+
             // if candle, try to blow it out
-            else if (body.CompareTag("Candle")) {
+            if (body.CompareTag("Candle")) {
                 // determine wind speed as a fn of z distance from source
                 var dz = body.transform.position.z - z0;
                 var pct = Mathf.InverseLerp(0.0f, dMax, dz);

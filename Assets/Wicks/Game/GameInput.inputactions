@@ -13,11 +13,20 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Screenshot",
+                    "type": "Button",
+                    "id": "eb57ddb7-3d1e-4c6b-b028-6fe769be4e79",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "One Modifier",
+                    "name": "Ctrl-R",
                     "id": "e2900b31-9ada-43b4-967d-223e97451fdb",
                     "path": "OneModifier",
                     "interactions": "",
@@ -30,7 +39,7 @@
                 {
                     "name": "modifier",
                     "id": "1a808488-f4e4-4a43-a2fc-533aeb567405",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -46,6 +55,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reset",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Ctrl-S",
+                    "id": "057a0dea-9ae2-480b-9533-ec92a066a196",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Screenshot",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "7a33f7eb-4968-4e0d-b89a-af25610451c3",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Screenshot",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "4d9fc950-7ad6-49d7-9243-dda0ce26f26a",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Screenshot",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

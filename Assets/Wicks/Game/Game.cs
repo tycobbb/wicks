@@ -10,9 +10,19 @@ public class Game: MonoBehaviour {
         SceneManager.LoadScene(scene.name);
     }
 
+    /// take a screenshot of the scene
+    void Screenshot() {
+        ScreenCapture.CaptureScreenshot("candles.png");
+    }
+
     // -- events --
     /// catch the reset input event
     public void OnReset(InputAction.CallbackContext ctx) {
         Reset();
+    }
+
+    /// catch the screenshot input event
+    public void OnScreenshot(InputAction.CallbackContext ctx) {
+        Screenshot();
     }
 }
